@@ -22,7 +22,7 @@ const navItems = [
   {
     id: 1,
     name: 'Dashboard',
-    path: '/'
+    path: '/react-app'
   },
   {
     id: 2,
@@ -33,7 +33,7 @@ const navItems = [
     id: 3,
     name: 'Orders',
     path: '/orders'
-  }
+  },
 ];
 
 function NavBar(props) {

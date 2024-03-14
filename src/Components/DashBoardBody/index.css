@@ -38,8 +38,8 @@
 .all-orders{
     display: flex;
     justify-content: end;
-    width: 79%;
-    color: rgb(18, 14, 118);
+    width: 81%;
+    color: gray;
     font-weight: bold;
     cursor: pointer;
     padding-bottom: 10px;

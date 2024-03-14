@@ -11,21 +11,25 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import {
   CircularProgress,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import { recentOrders } from "../../helper";
+import { Orders } from "../../helper";
 import { useNavigate } from "react-router-dom";
-// import ViewProduct from "../ProductsBody/ViewProduct";
 
 function Section() {
   const [recProducts, setRectProducts] = useState([]);
-  // const [openDrwer, setOpenDrawer] = useState(false)
   const navigate = useNavigate();
+  const recentOrders = Orders.filter((item) => item.id < 5);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     axios
@@ -35,7 +39,7 @@ function Section() {
 
   return (
     <Box className="sectionContainer">
-      <Box className="recomended-header">Looks Whats New...</Box>
+      <Box className="recomended-header">Look Whats New...</Box>
       <Box className="card-container">
         {recProducts.length !== 0 ? (
           recProducts.map((item) => {
@@ -93,42 +97,93 @@ function Section() {
           <CircularProgress />
         )}
       </Box>
-      {recProducts.length !== 0 ? (
+      {recentOrders.length !== 0 ? (
         <>
           <Box className="recent-oreders-container">
             <Box className="recomended-header">Recent Orders...</Box>
-            <TableContainer className="orders-table">
-              <Table
-                sx={{ minWidth: 450, maxWidth: 1200 }}
-                aria-label="simple table"
+            <Paper sx={{ width: isSmallScreen ? '100%' : '70%', overflow: "hidden" }}>
+            <TableContainer
+                sx={{
+                  minWidth: isSmallScreen ? 340 : 1050,
+                  maxWidth: 1050,
+                  width: isSmallScreen ? 340 : "100%",
+                }}
               >
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Dessert (100g serving)</TableCell>
-                    <TableCell>Calories</TableCell>
-                    <TableCell>Fat&nbsp;(g)</TableCell>
-                    <TableCell>Carbs&nbsp;(g)</TableCell>
-                    <TableCell>Protein&nbsp;(g)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {recentOrders.map((item) => (
-                    <TableRow
-                      key={item.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell>{item.id}</TableCell>
-                      <TableCell>{item.productName}</TableCell>
-                      <TableCell>{item.date}</TableCell>
-                      <TableCell>{item.price}</TableCell>
-                      <TableCell>{<Button color={item.status === 'Delivered' ? 'success' : 'error'}>{item.status}</Button>}</TableCell>
+                <Table stickyHeader aria-label="sticky table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Order ID</TableCell>
+                      <TableCell>Product Name</TableCell>
+                      <TableCell>Ordered Date</TableCell>
+                      <TableCell>Price</TableCell>
+                      <TableCell>Order Status</TableCell>
+                      <TableCell>Product image</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableHead>
+                  <TableBody>
+                    {recentOrders.map((item) => {
+                      return (
+                        <TableRow
+                          style={{ cursor: "pointer" }}
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={item.id}
+                        >
+                          <TableCell
+                            onClick={() => navigate(`/orders/${item?.id}`)}
+                            align="center"
+                          >
+                            {item.id}
+                          </TableCell>
+                          <TableCell
+                            onClick={() => navigate(`/orders/${item?.id}`)}
+                          >
+                            {item.productName}
+                          </TableCell>
+                          <TableCell
+                            onClick={() => navigate(`/orders/${item?.id}`)}
+                          >
+                            {item.date}
+                          </TableCell>
+                          <TableCell
+                            onClick={() => navigate(`/orders/${item?.id}`)}
+                          >
+                            {item.price}
+                          </TableCell>
+                          <TableCell
+                            onClick={() => navigate(`/orders/${item?.id}`)}
+                          >
+                            {
+                              <Button
+                                color={
+                                  item.status === "Delivered"
+                                    ? "success"
+                                    : "error"
+                                }
+                              >
+                                {item.status}
+                              </Button>
+                            }
+                          </TableCell>
+                          <TableCell>
+                            <img
+                              style={{ width: "90px", height: "60px" }}
+                              src={item.img}
+                              alt="product"
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
           </Box>
-          <Box className="all-orders">See All...</Box>
+          <Box onClick={() => navigate("/orders")} className="all-orders">
+            <Button color="success">View All...</Button>
+          </Box>
         </>
       ) : (
         <Box className="loader">
