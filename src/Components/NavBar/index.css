@@ -1,0 +1,17 @@
+.container{
+    height: 8vh;
+}
+.active{
+    /* background-color: rgb(206, 206, 206) !important; */
+    color: rgb(2, 2, 85) !important;
+    border-radius: 8px !important;
+}
+.routes{
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .container {
+        height: 8vh;
+    }
+  }

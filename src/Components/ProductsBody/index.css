@@ -1,0 +1,12 @@
+.products-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.search-product{
+    display: flex;
+    justify-content: space-around;
+}
+.search-product-input input{
+    width: 350px;
+}
